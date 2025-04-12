@@ -1,0 +1,22 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Ignore environment files
+.env
+*.env
+
+# Ignore IDE/editor files
+.vscode/
+*.code-workspace
+
+# Ignore Django migrations (optional)
+**/migrations/*.py
+**/migrations/__pycache__/
+
+# Ignore logs
+*.log
+
+# Ignore media and static if needed
+/media/
