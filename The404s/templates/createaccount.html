@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CreateAccount</title>
+<link rel="stylesheet" href="{% static 'createaccount.css' %}">
+</head>
+<body>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+  <div class="main">
+    <img src="{% static 'redlogo.jpg' %}" alt="image">
+    <div class="login">
+      <h1>Create an account</h1><br>
+      <h5>Already have an account <a href="#">login</a></h5>
+      <br>
+      <br>
+      <form action="{% url 'createaccount' %}" method="POST">
+        {% csrf_token %}
+        <div class="forms">
+          <input type="text" name="first_name" 
+          placeholder="First name"/>
+          <input type="text" name="surname" 
+          placeholder="Surname"/>
+        </div>
+        <div class="vert">
+          <input class="email" type="email" name="email" placeholder="Email"/>
+          <input type="text" name="password" placeholder="password"/>
+          <div class="tick">
+            <input type="checkbox" name="check"/>
+            <h5>I agree to the <a href="#">Terms and Conditions</a></h5>
+          </div>
+        </div>
+        <br>
+        <br><br>
+        <input class="button" type="submit" value="Create account"/>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

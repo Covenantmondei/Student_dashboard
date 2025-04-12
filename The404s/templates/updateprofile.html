@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="{% static 'update_profile.css' %}">
+</head>
+<body>
+
+    <!-- Sidebar Toggle Button (For Mobile) -->
+    <!-- <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button> -->
+
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <button id="closeSidebar">✖</button>
+            <h2>404 Schools</h2>
+            <ul>
+                <li><a href="{% static 'dashboard.html' %}">🏠 Dashboard</a></li>
+                <li><a href="{% static 'updateprofile.html' %}" class="active">👤 Update Profile</a></li>
+                <li><a href="#">📚 Courses</a></li>
+                <li><a href="#">📜 Results</a></li>
+                <li><a href="#">💳 Payments</a></li>
+                <li><a href="{% static 'logout' %}">🔓 Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main class="content">
+            
+            <header>
+                <button id="menuBtn" class="open">☰</button>
+                <h1>404Schools Student's ePortals</h1>
+                <div class="user-info">
+                    <span>{{ reg_no }}</span>
+                    <img src="user-photo.jpg" alt="Profile Photo">
+                    <button id="darkModeToggle">🌙</button>
+                </div>
+            </header>
+
+            <section class="update-profile">
+                <h2>Update Profile</h2>
+                <form id="profileForm">
+                    
+                    <!-- Profile Picture Upload -->
+                    <div class="profile-pic">
+                        <img id="profilePreview" src="uploads/default-avatar.png" alt="Profile Picture">
+                        <input type="file" id="profileImage" accept="image/*">
+                    </div>
+
+                    <!-- Non-editable Fields -->
+                    <label>Full Name:</label>
+                    <input type="text" id="fullName" value="John Doe" readonly>
+
+                    <label>Email:</label>
+                    <input type="email" id="email" value="johndoe@example.com" readonly>
+
+                    <!-- Editable Fields -->
+                    <label>Date of Birth:</label>
+                    <input type="date" id="dob" required>
+
+                    <label>Faculty:</label>
+                    <input type="text" id="faculty" required>
+
+                    <label>Course of Study:</label>
+                    <input type="text" id="course" required>
+
+                    <label>Programme Type:</label>
+                    <select id="programmeType">
+                        <option value="Undergraduate">Undergraduate</option>
+                        <option value="Postgraduate">Postgraduate</option>
+                    </select>
+
+                    <label>Entry Mode:</label>
+                    <select id="entryMode">
+                        <option value="UTME">UTME</option>
+                        <option value="Direct Entry">Direct Entry</option>
+                    </select>
+
+                    <label>Session:</label>
+                    <input type="text" id="session" placeholder="e.g., 2024/2025" required>
+
+                    <label>Entry Year:</label>
+                    <input type="number" id="entryYear" placeholder="e.g., 2024" required>
+
+                    <label>Semester:</label>
+                    <select id="semester">
+                        <option value="First Semester">First Semester</option>
+                        <option value="Second Semester">Second Semester</option>
+                    </select>
+
+                    <!-- Buttons -->
+                    <button type="submit">Save Profile</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="{% static 'update-profile.js' %}"></script>
+</body>
+</html>

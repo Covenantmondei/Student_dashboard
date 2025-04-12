@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Schools Student Portal</title>
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <button id="closeSidebar">✖</button>
+            <h3>Undergraduate (Full-Time) Portal</h3>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Check Profile</a></li>
+                <li><a href="{% url 'updateprofile' reg_no %}">Update Profile</a></li>
+                <li><a href="#">Register Courses</a></li>
+                <li><a href="#">Authority to Pay</a></li>
+                <li><a href="#">Forms History</a></li>
+                <li><a href="{% url 'logout'%}">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <button id="menuBtn">☰</button>
+                <h1>404Schools Student's ePortals</h1>
+                <div class="user-info">
+                    <span>{{ reg_no }}</span>
+                    <img src="user-photo.jpg" alt="Profile Photo">
+                    <button id="darkModeToggle">🌙</button>
+                </div>
+            </header>
+
+            <section class="student-info">
+                <h2>Student's Info</h2>
+                <div class="info-grid">
+                    <div><strong>Student's Name:</strong> {{ full_name }}</div>
+                    <div><strong>Faculty:</strong> {{ faculty}} </div>
+                    <div><strong>Email:</strong> {{ Email }}</div>
+                    <div><strong>Program Type:</strong> {{programme}}</div>
+                    <div><strong>Date of Birth:</strong> {{date_of_birth}}</div>
+                    <div><strong>Course of Study:</strong> {{course_of_study}}</div>
+                    <div><strong>Semester:</strong> {{semester}}</div>
+                    <div><strong>Entry Mode:</strong> {{entry_mode}}</div>
+                    <div><strong>Entry Year:</strong> {{entry_year}}</div>
+                    <div class="passport">
+                        <strong>Passport:</strong>
+                        <img src="{{profile_image}}" alt="Student Photo">
+                    </div>
+                    <div><strong>Mode of Study:</strong> Full-Time</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{% static 'dashboard.js' %}"></script>
+</body>
+</html>
