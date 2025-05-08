@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Error</title>
+    <link rel="stylesheet" href="{% static 'error.css' %}">
+    </head>
+    <body>
+    <div class="card">
+        <h1>❌ Error!</h1>
+        <p>Something went wrong. Please try again.</p>
+        <p id="redirect-msg">Returning to home in <span id="countdown">8</span> seconds...</p>
+        <a class="btn" href="#">Return Now</a>
+    </div>
+    <script src="{% static 'error.js' %}"></script>
+    </body>
+</html>

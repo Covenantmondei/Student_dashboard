@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify otp</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'verify_otp' %}">
+        {% csrf_token %}
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+
+        <button type="submit">Verify Otp</button>
+    </form>
+</body>
+</html>

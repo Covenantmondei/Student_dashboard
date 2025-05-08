@@ -18,12 +18,12 @@
             <button id="closeSidebar">✖</button>
             <h2>404 Schools</h2>
             <ul>
-                <li><a href="{% static 'dashboard.html' %}">🏠 Dashboard</a></li>
-                <li><a href="{% static 'updateprofile.html' %}" class="active">👤 Update Profile</a></li>
+                <li><a href="{% url 'dashboard' reg_no %}">🏠 Dashboard</a></li>
+                <li><a href="{% url 'updateprofile' reg_no %}" class="active">👤 Update Profile</a></li>
                 <li><a href="#">📚 Courses</a></li>
                 <li><a href="#">📜 Results</a></li>
                 <li><a href="#">💳 Payments</a></li>
-                <li><a href="{% static 'logout' %}">🔓 Logout</a></li>
+                <li><a href="{% url 'logout' %}">🔓 Logout</a></li>
             </ul>
         </div>
 
@@ -35,37 +35,48 @@
                 <h1>404Schools Student's ePortals</h1>
                 <div class="user-info">
                     <span>{{ reg_no }}</span>
-                    <img src="user-photo.jpg" alt="Profile Photo">
+                    <img src="{{ image }}" alt="Profile Photo">
                     <button id="darkModeToggle">🌙</button>
                 </div>
             </header>
 
             <section class="update-profile">
                 <h2>Update Profile</h2>
-                <form id="profileForm">
+
+                <!-- form to update profile -->
+                <form id="profileForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     
                     <!-- Profile Picture Upload -->
                     <div class="profile-pic">
-                        <img id="profilePreview" src="uploads/default-avatar.png" alt="Profile Picture">
+                        <img id="profilePreview" src="{% static 'uploads/default-avatar.png' %}" alt="Profile Picture">
                         <input type="file" id="profileImage" accept="image/*">
                     </div>
 
                     <!-- Non-editable Fields -->
                     <label>Full Name:</label>
-                    <input type="text" id="fullName" value="John Doe" readonly>
+                    <input type="text" id="fullName" value="{{ name }}" readonly>
 
                     <label>Email:</label>
-                    <input type="email" id="email" value="johndoe@example.com" readonly>
+                    <input type="email" id="email" value="{{ email }}" readonly>
 
                     <!-- Editable Fields -->
                     <label>Date of Birth:</label>
                     <input type="date" id="dob" required>
 
                     <label>Faculty:</label>
-                    <input type="text" id="faculty" required>
+                    <select name="faculty" id="faculty">
+                        <option value="select">--Select Faculty--</option>
+                        {% for fac in faculties %}
+                            <option value="{{ fac }}">{{ fac }}</option>
+                        {% endfor %}
+                    </select>
 
                     <label>Course of Study:</label>
-                    <input type="text" id="course" required>
+                    <select name="course_of_study" id="course_of_study">
+                        <option value="select">--Select Department--</option>
+                    </select>
+
 
                     <label>Programme Type:</label>
                     <select id="programmeType">
@@ -83,7 +94,7 @@
                     <input type="text" id="session" placeholder="e.g., 2024/2025" required>
 
                     <label>Entry Year:</label>
-                    <input type="number" id="entryYear" placeholder="e.g., 2024" required>
+                    <input type="text" id="entryYear" placeholder="e.g., 2024" required>
 
                     <label>Semester:</label>
                     <select id="semester">
@@ -97,6 +108,10 @@
             </section>
         </main>
     </div>
+
+    <script>
+        const getDepartmentsUrl = "{% url 'get_departments' %}";
+    </script>
 
     <script src="{% static 'update-profile.js' %}"></script>
 </body>

@@ -7,7 +7,7 @@ class UserAccount(models.Model):
     email = models.EmailField(unique=True) # to store user email
     reg_no = models.CharField(max_length=25)
     access_code = models.CharField(max_length=10, unique=True) # to store randomly generated accesscode
-    is_verified = models.BooleanField(default=False) #to check if email is verified
+    # is_verified = models.BooleanField(default=False) #to check if email is verified
     
     def __str__(self):
         return f"{self.first_name}, {self.surname} -- {self.reg_no}"

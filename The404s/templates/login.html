@@ -2,44 +2,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login</title>
-<link rel="stylesheet" href="{% static 'login.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login 404 Schools</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
 </head>
 <body>
-  <div class="main">
-    <img src="{% static 'redlogo.jpg' %}" alt="image">
-    <div class="login">
-      <h1>Login to your account</h1><br>
-      <h5>Don't have an account <a href="#">create account</a></h5>
-      <br>
-      <br>
-      <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="vert">
-          <input class="email" name="reg_num" placeholder="Registration Number"/>
-          <input type="text" name="accesscode" placeholder="Access Code"/>
-          <div class="tick">
-            <input type="checkbox" name="check"/>
-            <h5>I agree to the <a href="#">Terms and Conditions</a></h5>
-          </div>
-        </div>
-        <br>
-        <br><br>
-        <input class="button" type="submit" value="Login"/>
-      </form>
+    <div class="login-container">
+        <form class="login-form" id="loginForm" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h2>Welcome Back 👋</h2>
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" required>
+                    <button type="button" id="togglePassword">👁️</button>
+                </div>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <div class="loader" id="loader"></div>
+            <p class="signup-text">Don't have an account? <a href="{% url 'createaccount.html' %}">Sign up</a></p>
+        </form>
     </div>
-  </div>
-  <!-- ✅ Messages block goes here -->
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-<!-- ✅ End of messages block -->
+
+    <script src="{% static 'login.js' %}"></script>
 </body>
 </html>

@@ -6,9 +6,23 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import random
+from django.http import JsonResponse
+import time
+from decouple import config
+from django.templatetags.static import static
 
 REGNO = None
 ACCESSCODE = None
+
+# def get_departments(request):
+#     faculty_name = request.GET.get('faculty')
+#     try:
+#         faculty = UserFaculty.objects.get(faculty_name=faculty_name)
+#         departments = faculty.departments.all()
+#         department_list = [dept.department_name for dept in departments]
+#         return JsonResponse({'departments': department_list})
+#     except UserFaculty.DoesNotExist:
+#         return JsonResponse({'departments': []})
 
 def regno():
     """This function will randomly generate"""
@@ -27,17 +41,16 @@ def create_account(request):
     user = UserAccount.objects.filter() # filter through the database
     print(request.POST)
     if request.method == 'POST':
-        firstname = request.POST.get('first_name')
+        firstname = request.POST.get('firstname')
         sur_name = request.POST.get('surname')
         email = request.POST.get('email')
-        password =request.POST.get('password')
+        password = request.POST.get('password')
         
         if UserAccount.objects.filter(email=email).exists():
             messages.error(request, "Email already exists")
             return redirect('createaccount')
 
-        global reg_no
-        global access_code
+        # generate the reg_no and access_code
         reg_no = regno()
         access_code = accesscode()
         
@@ -45,29 +58,75 @@ def create_account(request):
         print("Account created success")
         
         user = UserAccount.objects.create(first_name=firstname, surname=sur_name, email=email, reg_no=reg_no, access_code=access_code)
-        send_verification_email(email, access_code)
+        # request.session['user_email'] = email
+        # generate_otp(email, access_code)
+        # send_verification_email(email, access_code)
         
-        messages.success(request, "Check your email and click the link to verify your email")
-        return redirect('login')
         
-        
-    return render(request, 'createaccount.html', {'messages': messages.get_messages(request)})
-
-
-def verify_email(request, access_code):
-    try:
-        user = UserAccount.objects.get(access_code=access_code)
-        user.is_verified = True
-        print(access_code)
+        # messages.success(request, "Enter OTP sent to your email")
         user.save()
-        messages.success(request, "Email verified successfully! Now complete your registration")
-        return redirect('login')
-    except UserAccount.DoesNotExist:
-        print("invalid access code!")
-        messages.error(request, 'Invalid Verification Link')
-        return redirect('create_account')
+        print("Redirecting to dashboard with reg_no:", reg_no)
+        return redirect('dashboard', reg_no=reg_no)
+    
+        
+    return render(request, 'createaccount.html')
 
-def login(request):
+
+# def verify_email(request, access_code):
+#     try:
+#         user = UserAccount.objects.get(access_code=access_code)
+#         user.is_verified = True
+#         print(access_code)
+#         user.save()
+#         messages.success(request, "Email verified successfully! Now complete your registration")
+#         return redirect('login')
+#     except UserAccount.DoesNotExist:
+#         print("invalid access code!")
+#         messages.error(request, 'Invali d Verification Link')
+#         return redirect('create_account')
+    
+# def send_otp(request):
+#     email = request.session.get('user_email')
+#     otp = generate_otp()
+#     request.session['otp'] = otp
+#     request.session['otp_expiry'] = str(time.time() + 300)  # Set session expiry to 5 minutes
+    
+#     send_mail(
+#         subject='Your OTP Code',
+#         message=f'Your OTP code is: {otp}',
+#         from_email=config('EMAIL_HOST_USER'),
+#         recipient_list=[email],
+#         fail_silently=False,
+#     )
+    
+# def verify_otp(request):
+#     if request.method == 'POST':
+#         entered_otp = request.POST.get('otp')
+#         otp = request.session.get('otp')
+#         otp_expiry = request.session.get('otp_expiry')
+        
+#         if not otp or not otp_expiry:
+#             messages.error(request, "No OTP entered. Please request a new OTP.")
+#             return redirect('createaccount')
+        
+#         if time.time() > float(otp_expiry):
+#             messages.error(request, "OTP has expired. Please request a new one.")
+#             return redirect('createaccount')
+        
+#         otp_expiry = float(otp_expiry)
+        
+#         if entered_otp == otp:
+#             user = UserAccount.objects.get(email=request.session['user_email'])
+#             user.is_verified = True
+#             user.save()
+#             messages.success(request, "Email verified successfully! Now complete your registration")
+#             return redirect('dashboard')
+#         else:
+#             messages.error(request, "Invalid OTP. Please try again.")
+    
+#     return render(request, 'otp_page.html')
+
+def login_view(request):
     
     if request.method == 'POST':
         reg_num = request.POST['reg_num']
@@ -76,21 +135,27 @@ def login(request):
         
         if UserAccount.objects.filter(reg_no=reg_num).exists(): #filter through the database to check if the user exists
             # check if the user is verified
-            user = UserAccount.objects.get(reg_no=reg_num)
-            if user.is_verified:
+            try:
+                user = UserAccount.objects.get(reg_no=reg_num)
                 if user.access_code == access_code:
                     messages.success(request, "Login Successful. Continue to you dashboard")
                     return redirect('dashboard', reg_no=user.reg_no)
-                try:
-                    user = UserAccount.objects.get(reg_no=reg_num)
-                except user.DoesNotExist:
-                    messages.error(request, "Invalid Student Details")
-                    return redirect('login')
+                
+            except UserAccount.DoesNotExist:
+                messages.error(request, "Invalid Student Details")
+                return redirect('login')
                 
     return render(request, 'login.html')
 
 # make it necessary for user login to access the dashboard
 
+def get_departments(request):
+    user_faculty = request.GET.get('faculty')
+    dept = UserDept.objects.filter(unique_key__faculty_name=user_faculty).values_list('dept_name', flat=True)
+    return JsonResponse({'departments': list(dept)})
+
+
+# @login_required(login_url='login')
 def dashboard(request, reg_no):
     user = get_object_or_404(UserAccount, reg_no=reg_no)
     student = StudentSchoolDetails.objects.filter(student=user).first() # filter through the model
@@ -109,7 +174,8 @@ def dashboard(request, reg_no):
         "session": student.session if profile else None,
         "entry_year": student.entry_year if profile else None,
         "semester": student.semester if profile else None,
-        "profile_image": profile.image.url if profile and profile.image else "/static/default_profile.jpg"
+        # "profile_image": profile.image.url if profile and profile.image else None
+
     }
     return render(request, 'dashboard.html', context)
 
@@ -119,14 +185,13 @@ def register_courses(request):
 def update_profile(request, reg_no):
     user = get_object_or_404(UserAccount, reg_no=reg_no)
     student = StudentProfile.objects.filter(student=user).first() # filter through the model
+    all_faculty = UserFaculty.objects.all()
+    all_departments = UserDept.objects.all()
     
-    context = {
-        "reg.no": user.reg_no,
-    }
     
     if request.method == 'POST':
         dob = request.POST.get('dob')
-        faculty = request.POST.get('faculty')
+        faculty_name = request.POST.get('faculty')
         course_of_study = request.POST.get('course_of_study')
         email = request.POST.get('email')
         programme = request.POST.get('programme')
@@ -134,30 +199,65 @@ def update_profile(request, reg_no):
         session = request.POST.get('session')
         entry_year = request.POST.get('entry_year')
         semester = request.POST.get('semester')
+       
         
-        if StudentProfile.objects.filter(student=user).exists():
-            profile = StudentProfile.objects.get(student=user)
-            profile.dob = dob
-            profile.faculty = faculty
-            profile.course_of_study = course_of_study
-            profile.email = email
-            profile.programme_type = programme
-            profile.entry_mode = entry_mode
-            profile.session = session
-            profile.entry_year = entry_year
-            profile.semester = semester
+        if StudentSchoolDetails.objects.filter(student=user).exists():
+            student_profile = StudentProfile.objects.get(student=user)
+            student_details = StudentSchoolDetails.objects.get(student=user)
+            student_profile.dob = dob
+            student_details.faculty = faculty_name
+            student_details.department = course_of_study
+            student_details.programme_type = programme
+            student_details.entry_mode = entry_mode
+            student_details.session = session
+            student_details.entry_year = entry_year
+            student_details.semester = semester
             
             if 'image' in request.FILES:
-                profile.image = request.FILES['image']
+                student_profile.passport = request.FILES['image']
+            student_details.objects.update_or_create(student=user, defaults={
+                'faculty': faculty_name,
+                'department': course_of_study,
+                'programme_type': programme,
+                'entry_mode': entry_mode,
+                'session': session,
+                'entry_year': entry_year,
+                'semester': semester
+            })
             
-            profile.save()
+            student_profile.objects.update_or_create(student=user, defaults={
+                'dob': dob,
+                'passport': student_profile.passport
+            })
+            student_details.save()
+            student_profile.save()
+            print("POST DATA:", request.POST)
+
             
             messages.success(request, "Profile updated successfully")
             return redirect('dashboard', reg_no=user.reg_no)
+            
+    context = {
+    "reg_no": user.reg_no,
+    "name": f"{user.first_name} {user.surname}",
+    "email": f"{user.email}",
+    "faculties": all_faculty,
+    "departments": all_departments,
+    "image": student.passport.url if student and student.passport else "/static/default_profile.jpg",
+    }
     return render(request, 'updateprofile.html', context)
 
 def check_profile(request):
     return render(request, 'checkprofile.html')
+
+def terms_conditions(request):
+    return render(request, 'terms_conditions.html')
+
+def error(request):
+    return render(request, 'error.html')
+
+def success(request):
+    return render(request, 'success.html')
 
 def user_logout(request):
     logout(request)

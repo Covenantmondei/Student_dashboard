@@ -66,34 +66,28 @@ document.addEventListener("DOMContentLoaded", function () {
             reader.readAsDataURL(file);
         }
     });
-
-    // Handle Form Submission
-    profileForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const profileData = {
-            dob: document.getElementById("dob").value.trim(),
-            faculty: document.getElementById("faculty").value.trim(),
-            course: document.getElementById("course").value.trim(),
-            programmeType: document.getElementById("programmeType").value,
-            entryMode: document.getElementById("entryMode").value,
-            session: document.getElementById("session").value.trim(),
-            entryYear: document.getElementById("entryYear").value.trim(),
-            semester: document.getElementById("semester").value,
-            profilePic: profilePreview.src
-        };
-
-        // Validation
-        if (!profileData.dob || !profileData.faculty || !profileData.course || !profileData.session || !profileData.entryYear) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        // Save profile data to localStorage
-        localStorage.setItem("profileData", JSON.stringify(profileData));
-        alert("Profile updated successfully!");
-
-        
-    });
 });
 
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const facultySelect = document.getElementById("faculty");
+    const deptSelect = document.getElementById("course_of_study");
+
+    facultySelect.addEventListener("change", function () {
+        const selectedFaculty = this.value;
+
+        fetch(`${getDepartmentsUrl}?faculty=${encodeURIComponent(selectedFaculty)}`)
+            .then(response => response.json())
+            .then(data => {
+                deptSelect.innerHTML = '<option value="select">--Select Department--</option>';
+                data.departments.forEach(dept => {
+                    const option = document.createElement("option");
+                    option.value = dept;
+                    option.textContent = dept;
+                    deptSelect.appendChild(option);
+                });
+            });
+    });
+});

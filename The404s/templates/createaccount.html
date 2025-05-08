@@ -2,48 +2,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>CreateAccount</title>
-<link rel="stylesheet" href="{% static 'createaccount.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> The 404 Schools </title>
+    <link rel="stylesheet" href="{% static 'signin.css' %}">
 </head>
 <body>
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-  <div class="main">
-    <img src="{% static 'redlogo.jpg' %}" alt="image">
-    <div class="login">
-      <h1>Create an account</h1><br>
-      <h5>Already have an account <a href="#">login</a></h5>
-      <br>
-      <br>
-      <form action="{% url 'createaccount' %}" method="POST">
-        {% csrf_token %}
-        <div class="forms">
-          <input type="text" name="first_name" 
-          placeholder="First name"/>
-          <input type="text" name="surname" 
-          placeholder="Surname"/>
-        </div>
-        <div class="vert">
-          <input class="email" type="email" name="email" placeholder="Email"/>
-          <input type="text" name="password" placeholder="password"/>
-          <div class="tick">
-            <input type="checkbox" name="check"/>
-            <h5>I agree to the <a href="#">Terms and Conditions</a></h5>
-          </div>
-        </div>
-        <br>
-        <br><br>
-        <input class="button" type="submit" value="Create account"/>
-      </form>
+    <div class="signup-container">
+        <form class="signup-form" id="signupForm" method="post" action="{% url 'createaccount' %}">
+          {% csrf_token  %}
+            <h2>Welcome 👋</h2>
+            <div class="input-group">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" required>
+            </div>
+            <div class="input-group">
+              <label for="surname">Last Name</label>
+              <input type="text" name="surname" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" id="togglePassword">👁️</button>
+                </div>
+            </div>
+            <button type="submit" class="signup-btn">Register</button>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#">terms and conditions</a></label>
+            </div>
+            <div class="loader" id="loader"></div>
+            <p class="signup-text">Have an account already? <a href="{% url 'login' %}">Login</a></p>
+        </form>
     </div>
-  </div>
+
+    <script src="{% static 'createaccount.js' %}"></script>
 </body>
 </html>

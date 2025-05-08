@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="{% static'style.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <form class="otp-form">
+        <h2>Verify Your Account</h2>
+        <p>Enter the 6-digit code sent to your email.</p>
+        <div class="otp-inputs">
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+        </div>
+        <button type="submit">Verify</button>
+        <p class="resend">Didn't receive the code? <a href="#">Resend</a></p>
+    </form>
+</div>
+<script src="{% static 'otp_page.js' %}"></script>
+
+</body>
+</html>
