@@ -1,456 +1,650 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Profile</title>
-</head>
-<body>
-    <style>
-        /* General Page Styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f9f9f9;
-            color: #333;
-            transition: background 0.3s, ease-in-out;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Update Profile - 404 Schools</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <style>
+            :root {
+                --primary-color: #4a6fa5;
+                --primary-dark: #3a5a8a;
+                --secondary-color: #f8f9fa;
+                --text-dark: #343a40;
+                --text-light: #6c757d;
+                --bg-light: #ffffff;
+                --bg-dark: #1e1e2d;
+                --sidebar-width: 280px;
+                --transition-speed: 0.3s;
+                --error-color: #dc3545;
+                --success-color: #28a745;
+            }
 
-        /* Dark Mode */
-        body.dark-mode {
-            background: #1a1a1a;
-            color: #eee;
-        }
+            /* General Page Styling */
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: var(--secondary-color);
+                color: var(--text-dark);
+                transition: all var(--transition-speed) ease;
+                line-height: 1.6;
+            }
 
-        body.dark-mode .sidebar {
-            background: #4b0000;
-        }
+            /* Dark Mode */
+            body.dark-mode {
+                background-color: #121212;
+                color: #e0e0e0;
+            }
 
-        body.dark-mode .header,
-        body.dark-mode form {
-            background: #2a2a2a;
-            color: white;
-        }
+            body.dark-mode .sidebar {
+                background: #1a1a2e;
+            }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: rgb(143,77,77); /* Maroon */
-            color: #fff;
-            padding: 20px;
-            height: 100vh;
-            position: fixed;
-            transition: transform 0.3s ease-in-out;
-        }
+            body.dark-mode header,
+            body.dark-mode .update-profile,
+            body.dark-mode form {
+                background: var(--bg-dark);
+                color: #e0e0e0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
 
-        .sidebar h2 {
-            color: #fff; /* Gold */
-            margin-bottom: 30px;
-        }
+            body.dark-mode form input,
+            body.dark-mode form select {
+                background: #2a2a2a;
+                color: #e0e0e0;
+                border-color: #444;
+            }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+            /* Layout */
+            .container {
+                display: flex;
+                min-height: 100vh;
+            }
 
-        .sidebar ul li a {
-            color: #fff;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-
-        .sidebar ul li a.active,
-        .sidebar ul li a:hover {
-            background: #a52a2a;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
+            /* Sidebar Navigation */
             .sidebar {
-                transform: translateX(-250px);
-                position: absolute;
-                z-index: 10;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .menu-btn {
-                display: block;
-                background: #800000;
+                width: var(--sidebar-width);
+                background-color: var(--primary-color);
                 color: white;
-                padding: 10px;
-                border: none;
-                font-size: 18px;
-                cursor: pointer;
-                border-radius: 5px;
                 position: fixed;
-                top: 10px;
-                left: 10px;
-                z-index: 20;
+                height: 100vh;
+                padding: 1.5rem 1rem;
+                left: 0;
+                transition: all var(--transition-speed) ease;
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             }
 
-            form {
-                width: 100%;
+            .sidebar-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
-        }
 
-        .open {
-            background-color: #1a1a1a;
-        }
+            .sidebar h2 {
+                margin: 0;
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: white;
+            }
 
-        @media (max-width: 480px) {
-            .header {
-                flex-direction: column;
+            .sidebar button {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 50%;
+                transition: background 0.2s;
+            }
+
+            .sidebar button:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sidebar ul li {
+                margin: 0.5rem 0;
+            }
+
+            .sidebar ul li a {
+                color: white;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-radius: 6px;
+                transition: all 0.2s;
+            }
+
+            .sidebar ul li a i {
+                margin-right: 0.75rem;
+                width: 1.25rem;
                 text-align: center;
             }
 
-            .header .reg-no {
-                font-size: 14px;
+            .sidebar ul li a:hover {
+                background-color: var(--primary-dark);
+                transform: translateX(5px);
             }
 
-            .header-right {
-                margin-top: 10px;
+            .sidebar ul li a.active {
+                background-color: var(--primary-dark);
+                font-weight: 500;
             }
-        }
 
+            /* Hide Sidebar on Mobile */
+            @media (max-width: 768px) {
+                .sidebar {
+                    left: calc(-1 * var(--sidebar-width));
+                }
 
-        /* Main Content */
-        .content {
-            margin-left: 270px;
-            padding: 20px;
-            flex-grow: 1;
-            transition: margin-left 0.3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                margin-left: 0;
-            }
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        header h1 {
-            font-size: 22px;
-            color: rgb(143,77,77);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-
-        /* Dark Mode Button */
-        #darkModeToggle {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* Sidebar Toggle Button */
-        #menuBtn {
-            font-size: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .update-profile {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        .update-profile h2 {
-            color: rgb(143,77,77);
-        }
-
-        /* Form Styling */
-        form {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 0 10px rgba(128, 0, 0, 0.2);
-        }
-
-        form label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        form input,
-        form select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        form button[type="submit"] {
-            background: #800000;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background: #a52a2a;
-        }
-
-        /* Profile Picture */
-        .profile-pic {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-pic img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #800000;
-            margin-bottom: 10px;
-        }
-
-
-
-    </style>
-
-    <!-- Sidebar Toggle Button (For Mobile) -->
-    <!-- <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button> -->
-
-    <div class="dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <button id="closeSidebar">✖</button>
-            <h2>404 Schools</h2>
-            <ul>
-                <li><a href="{% url 'dashboard' reg_no %}">🏠 Dashboard</a></li>
-                <li><a href="{% url 'updateprofile' reg_no %}" class="active">👤 Update Profile</a></li>
-                <li><a href="#">📚 Courses</a></li>
-                <li><a href="#">📜 Results</a></li>
-                <li><a href="#">💳 Payments</a></li>
-                <li><a href="{% url 'logout' %}">🔓 Logout</a></li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <main class="content">
-            
-            <header>
-                <button id="menuBtn" class="open">☰</button>
-                <h1>404Schools Student's ePortals</h1>
-                <div class="user-info">
-                    <span>{{ reg_no }}</span>
-                    <img src="{{ image }}" alt="Profile Photo">
-                    <button id="darkModeToggle">🌙</button>
-                </div>
-            </header>
-
-            <section class="update-profile">
-                <h2>Update Profile</h2>
-
-                <!-- form to update profile -->
-                <form id="profileForm" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    
-                    <!-- Profile Picture Upload -->
-                    <div class="profile-pic">
-                        <img id="profilePreview" src="{% static 'uploads/default-avatar.png' %}" alt="Profile Picture">
-                        <input type="file" id="profileImage" accept="image/*">
-                    </div>
-
-                    <!-- Non-editable Fields -->
-                    <label>Full Name:</label>
-                    <input type="text" id="fullName" value="{{ name }}" readonly>
-
-                    <label>Email:</label>
-                    <input type="email" id="email" value="{{ email }}" readonly>
-
-                    <!-- Editable Fields -->
-                    <label>Date of Birth:</label>
-                    <input type="date" id="dob" required>
-
-                    <label>Faculty:</label>
-                    <select name="faculty" id="faculty">
-                        <option value="select">--Select Faculty--</option>
-                        {% for fac in faculties %}
-                            <option value="{{ fac }}">{{ fac }}</option>
-                        {% endfor %}
-                    </select>
-
-                    <label>Course of Study:</label>
-                    <select name="course_of_study" id="course_of_study">
-                        <option value="select">--Select Department--</option>
-                    </select>
-
-
-                    <label>Programme Type:</label>
-                    <select id="programmeType">
-                        <option value="Undergraduate">Undergraduate</option>
-                        <option value="Postgraduate">Postgraduate</option>
-                    </select>
-
-                    <label>Entry Mode:</label>
-                    <select id="entryMode">
-                        <option value="UTME">UTME</option>
-                        <option value="Direct Entry">Direct Entry</option>
-                    </select>
-
-                    <label>Session:</label>
-                    <input type="text" id="session" placeholder="e.g., 2024/2025" required>
-
-                    <label>Entry Year:</label>
-                    <input type="text" id="entryYear" placeholder="e.g., 2024" required>
-
-                    <label>Semester:</label>
-                    <select id="semester">
-                        <option value="First Semester">First Semester</option>
-                        <option value="Second Semester">Second Semester</option>
-                    </select>
-
-                    <!-- Buttons -->
-                    <button type="submit">Save Profile</button>
-                </form>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        const getDepartmentsUrl = "{% url 'get_departments' %}";
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const menuBtn = document.getElementById("menuBtn");
-        const closeSidebar = document.getElementById("closeSidebar");
-        const sidebar = document.getElementById("sidebar");
-        const darkModeToggle = document.getElementById("darkModeToggle");
-        const profileForm = document.getElementById("profileForm");
-        const profileImage = document.getElementById("profileImage");
-        const profilePreview = document.getElementById("profilePreview");
-
-        // Toggle Sidebar
-        menuBtn.addEventListener("click", () => {
-            sidebar.classList.add("active");
-        });
-
-        closeSidebar.addEventListener("click", () => {
-            sidebar.classList.remove("active");
-        });
-
-        // Toggle Dark Mode
-        darkModeToggle.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-
-            // Save preference to localStorage
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("darkMode", "enabled");
-            } else {
-                localStorage.setItem("darkMode", "disabled");
-            }
-        });
-
-        // Load Dark Mode Preference
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-        }
-
-
-
-        // Load saved profile from localStorage
-        function loadProfile() {
-            const savedData = JSON.parse(localStorage.getItem("profileData"));
-            if (savedData) {
-                document.getElementById("dob").value = savedData.dob || "";
-                document.getElementById("faculty").value = savedData.faculty || "";
-                document.getElementById("course").value = savedData.course || "";
-                document.getElementById("programmeType").value = savedData.programmeType || "Undergraduate";
-                document.getElementById("entryMode").value = savedData.entryMode || "UTME";
-                document.getElementById("session").value = savedData.session || "";
-                document.getElementById("entryYear").value = savedData.entryYear || "";
-                document.getElementById("semester").value = savedData.semester || "First Semester";
-
-                if (savedData.profilePic) {
-                    profilePreview.src = savedData.profilePic;
+                .sidebar.open {
+                    left: 0;
                 }
             }
-        }
-        loadProfile();
 
-        // Handle Profile Image Upload
-        profileImage.addEventListener("change", function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    profilePreview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+            /* Main Content */
+            .content {
+                margin-left: var(--sidebar-width);
+                padding: 1.5rem;
+                width: 100%;
+                transition: margin-left var(--transition-speed) ease;
             }
-        });
-    });
 
+            @media (max-width: 768px) {
+                .content {
+                    margin-left: 0;
+                }
+            }
 
+            /* Header */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: var(--bg-light);
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                margin-bottom: 1.5rem;
+            }
 
+            header h1 {
+                font-size: 1.4rem;
+                color: var(--primary-color);
+                margin: 0;
+                font-weight: 600;
+            }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const facultySelect = document.getElementById("faculty");
-        const deptSelect = document.getElementById("course_of_study");
+            .user-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
 
-        facultySelect.addEventListener("change", function () {
-            const selectedFaculty = this.value;
+            .user-info span {
+                font-weight: 500;
+                color: var(--text-dark);
+            }
 
-            fetch(`${getDepartmentsUrl}?faculty=${encodeURIComponent(selectedFaculty)}`)
-                .then(response => response.json())
-                .then(data => {
-                    deptSelect.innerHTML = '<option value="select">--Select Department--</option>';
-                    data.departments.forEach(dept => {
-                        const option = document.createElement("option");
-                        option.value = dept;
-                        option.textContent = dept;
-                        deptSelect.appendChild(option);
-                    });
+            body.dark-mode .user-info span {
+                color: #e0e0e0;
+            }
+
+            .user-info img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid var(--primary-color);
+            }
+
+            /* Buttons */
+            .btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.5rem;
+                border-radius: 50%;
+                transition: all 0.2s;
+            }
+
+            .btn:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            body.dark-mode .btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            #menuBtn {
+                font-size: 1.25rem;
+                color: var(--text-dark);
+                margin-right: 1rem;
+                display: none;
+            }
+
+            body.dark-mode #menuBtn {
+                color: #e0e0e0;
+            }
+
+            @media (max-width: 768px) {
+                #menuBtn {
+                    display: inline-flex;
+                }
+            }
+
+            #darkModeToggle {
+                font-size: 1.1rem;
+                color: var(--text-dark);
+            }
+
+            body.dark-mode #darkModeToggle {
+                color: #ffcc00;
+            }
+
+            /* Update Profile Section */
+            .update-profile {
+                background: var(--bg-light);
+                padding: 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .update-profile h2 {
+                color: var(--primary-color);
+                margin-top: 0;
+                margin-bottom: 1.5rem;
+                font-size: 1.3rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            body.dark-mode .update-profile h2 {
+                border-bottom-color: rgba(255, 255, 255, 0.1);
+            }
+
+            /* Form Styling */
+            form {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.25rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: var(--text-light);
+            }
+
+            body.dark-mode .form-group label {
+                color: #a0a0a0;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 1rem;
+                transition: border 0.2s;
+            }
+
+            .form-group input:focus,
+            .form-group select:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+            }
+
+            body.dark-mode .form-group input,
+            body.dark-mode .form-group select {
+                background: #2a2a2a;
+                color: #e0e0e0;
+                border-color: #444;
+            }
+
+            /* Profile Picture */
+            .profile-pic {
+                text-align: center;
+                margin: 1.5rem 0;
+            }
+
+            .profile-pic img {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid var(--primary-color);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .profile-pic input[type="file"] {
+                display: none;
+            }
+
+            .profile-pic label {
+                display: inline-block;
+                margin-top: 0.75rem;
+                padding: 0.5rem 1rem;
+                background: var(--primary-color);
+                color: white;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            .profile-pic label:hover {
+                background: var(--primary-dark);
+            }
+
+            /* Submit Button */
+            .submit-btn {
+                display: block;
+                width: 100%;
+                max-width: 200px;
+                margin: 2rem auto 0;
+                padding: 0.75rem;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            .submit-btn:hover {
+                background: var(--primary-dark);
+            }
+
+            /* Readonly Fields */
+            input[readonly] {
+                background-color: #f5f5f5 !important;
+                cursor: not-allowed;
+            }
+
+            body.dark-mode input[readonly] {
+                background-color: #333 !important;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+                
+                .user-info {
+                    width: 100%;
+                    justify-content: space-between;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .content {
+                    padding: 1rem;
+                }
+                
+                .update-profile {
+                    padding: 1rem;
+                }
+            }
+        </style>
+
+        <div class="container">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h2>404 Schools</h2>
+                    <button id="closeSidebar"><i class="fas fa-times"></i></button>
+                </div>
+                <ul>
+                    <li><a href="{% url 'dashboard' reg_no %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="{% url 'updateprofile' reg_no %}" class="active"><i class="fas fa-user-edit"></i> Update Profile</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Courses</a></li>
+                    <li><a href="#"><i class="fas fa-scroll"></i> Results</a></li>
+                    <li><a href="#"><i class="fas fa-credit-card"></i> Payments</a></li>
+                    <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="content">
+                <header>
+                    <button id="menuBtn" class="btn"><i class="fas fa-bars"></i></button>
+                    <h1>404Schools Student Portal</h1>
+                    <div class="user-info">
+                        <span>{{ reg_no }}</span>
+                        <img id="profilePreview" src="{% static 'uploads/default-avatar.png' %}" alt="Profile Picture">
+                        <button id="darkModeToggle" class="btn"><i class="fas fa-moon"></i></button>
+                    </div>
+                </header>
+
+                <section class="update-profile">
+                    <h2><i class="fas fa-user-edit"></i> Update Profile</h2>
+
+                    <form id="profileForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Profile Picture Upload -->
+                        <div class="profile-pic">
+                            <img id="profilePreview" src="{% static 'uploads/default-avatar.png' %}" alt="Profile Picture">
+                            <input type="file" id="profileImage" name="profile_image" accept="image/*">
+                            <label for="profileImage"><i class="fas fa-camera"></i> Change Photo</label>
+                        </div>
+
+                        <div class="form-grid">
+                            <!-- Non-editable Fields -->
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" value="{{ name }}" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" value="{{ email }}" readonly>
+                            </div>
+
+                            <!-- Editable Fields -->
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" value="{{ date_of_birth }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="faculty">Faculty</label>
+                                <select name="faculty" id="faculty" required>
+                                    <option value="">-- Select Faculty --</option>
+                                    {% for fac in faculties %}
+                                        <option value="{{ fac }}" {% if fac == faculty %}selected{% endif %}>{{ fac }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="course_of_study">Course of Study</label>
+                                <select name="course_of_study" id="course_of_study" required>
+                                    <option value="">-- Select Department --</option>
+                                    {% if course_of_study %}
+                                        <option value="{{ course_of_study }}" selected>{{ course_of_study }}</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="programmeType">Programme Type</label>
+                                <select id="programmeType" name="programme_type" required>
+                                    <option value="Undergraduate" {% if programme == "Undergraduate" %}selected{% endif %}>Undergraduate</option>
+                                    <option value="Postgraduate" {% if programme == "Postgraduate" %}selected{% endif %}>Postgraduate</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="entryMode">Entry Mode</label>
+                                <select id="entryMode" name="entry_mode" required>
+                                    <option value="UTME" {% if entry_mode == "UTME" %}selected{% endif %}>UTME</option>
+                                    <option value="Direct Entry" {% if entry_mode == "Direct Entry" %}selected{% endif %}>Direct Entry</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <input type="text" id="session" name="session" value="{{ session }}" placeholder="e.g., 2024/2025" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="entryYear">Entry Year</label>
+                                <input type="text" id="entryYear" name="entry_year" value="{{ entry_year }}" placeholder="e.g., 2024" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="semester">Semester</label>
+                                <select id="semester" name="semester" required>
+                                    <option value="First Semester" {% if semester == "First Semester" %}selected{% endif %}>First Semester</option>
+                                    <option value="Second Semester" {% if semester == "Second Semester" %}selected{% endif %}>Second Semester</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Save Changes</button>
+                    </form>
+                </section>
+            </main>
+        </div>
+
+        <script>
+            const getDepartmentsUrl = "{% url 'get_departments' %}";
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const menuBtn = document.getElementById("menuBtn");
+                const closeSidebar = document.getElementById("closeSidebar");
+                const sidebar = document.getElementById("sidebar");
+                const darkModeToggle = document.getElementById("darkModeToggle");
+                const profileImage = document.getElementById("profileImage");
+                const profilePreview = document.getElementById("profilePreview");
+                const facultySelect = document.getElementById("faculty");
+                const deptSelect = document.getElementById("course_of_study");
+
+                // Toggle Sidebar
+                menuBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("open");
                 });
-        });
-    });
 
-    </script>
-</body>
+                closeSidebar.addEventListener("click", () => {
+                    sidebar.classList.remove("open");
+                });
+
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', (e) => {
+                    const isMobile = window.innerWidth <= 768;
+                    const isMenuBtn = e.target === menuBtn || menuBtn.contains(e.target);
+                    const isSidebar = e.target === sidebar || sidebar.contains(e.target);
+
+                    if (isMobile && !isMenuBtn && !isSidebar) {
+                        sidebar.classList.remove("open");
+                    }
+                });
+
+                // Toggle Dark Mode
+                darkModeToggle.addEventListener("click", () => {
+                    document.body.classList.toggle("dark-mode");
+                    
+                    // Update icon
+                    const icon = darkModeToggle.querySelector('i');
+                    if (document.body.classList.contains("dark-mode")) {
+                        localStorage.setItem("darkMode", "enabled");
+                        icon.classList.replace('fa-moon', 'fa-sun');
+                    } else {
+                        localStorage.setItem("darkMode", "disabled");
+                        icon.classList.replace('fa-sun', 'fa-moon');
+                    }
+                });
+
+                // Load Dark Mode Preference
+                if (localStorage.getItem("darkMode") === "enabled") {
+                    document.body.classList.add("dark-mode");
+                    darkModeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+                }
+
+                // Handle Profile Image Upload
+                profileImage.addEventListener("change", function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            profilePreview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                // Dynamic Department Loading
+                facultySelect.addEventListener("change", function() {
+                    const selectedFaculty = this.value;
+                    if (!selectedFaculty) return;
+
+                    fetch(`${getDepartmentsUrl}?faculty=${encodeURIComponent(selectedFaculty)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            deptSelect.innerHTML = '<option value="">-- Select Department --</option>';
+                            data.departments.forEach(dept => {
+                                const option = document.createElement("option");
+                                option.value = dept;
+                                option.textContent = dept;
+                                deptSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error fetching departments:", error);
+                        });
+                });
+
+                // Initialize departments if faculty is already selected
+                if (facultySelect.value) {
+                    facultySelect.dispatchEvent(new Event('change'));
+                }
+            });
+        </script>
+    </body>
 </html>

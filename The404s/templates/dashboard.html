@@ -5,78 +5,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 Schools Student Portal</title>
-    <!-- <link rel="stylesheet" href="{% static 'dashboard.css' %}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --primary-dark: #3a5a8a;
+            --secondary-color: #f8f9fa;
+            --text-dark: #343a40;
+            --text-light: #6c757d;
+            --bg-light: #ffffff;
+            --bg-dark: #1e1e2d;
+            --sidebar-width: 280px;
+            --transition-speed: 0.3s;
+        }
+
         /* General Page Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f4f7;
-            transition: background 0.3s ease-in-out;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            transition: all var(--transition-speed) ease;
+            line-height: 1.6;
         }
 
         /* Dark Mode */
         body.dark-mode {
-            background-color: #1a1a1a;
-            color: white;
+            background-color: #121212;
+            color: #e0e0e0;
         }
 
         body.dark-mode .student-info, 
         body.dark-mode header {
-            background: #333;
-            color: white;
+            background: var(--bg-dark);
+            color: #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .sidebar {
+            background: #1a1a2e;
+        }
+
+        body.dark-mode .sidebar ul li a:hover {
+            background-color: #2a2a3e;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
         }
 
         /* Sidebar Navigation */
         .sidebar {
-            width: 250px;
-            background-color: rgb(143,77,77);
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
             color: white;
             position: fixed;
             height: 100vh;
-            padding: 20px;
+            padding: 1.5rem 1rem;
             left: 0;
-            transition: left 0.3s ease-in-out;
+            transition: all var(--transition-speed) ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
         .sidebar button {
             background: none;
             border: none;
             color: white;
-            font-size: 18px;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin-bottom: 10px;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .sidebar button:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .sidebar ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .sidebar ul li {
-            margin: 15px 0;
+            margin: 0.5rem 0;
         }
 
         .sidebar ul li a {
             color: white;
             text-decoration: none;
-            display: block;
-            padding: 10px;
-            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 0.75rem;
+            width: 1.25rem;
+            text-align: center;
         }
 
         .sidebar ul li a:hover {
-            background-color: rgb(75, 37, 37);
-            border-radius: 5px;
+            background-color: var(--primary-dark);
+            transform: translateX(5px);
+        }
+
+        .sidebar ul li a.active {
+            background-color: var(--primary-dark);
+            font-weight: 500;
         }
 
         /* Hide Sidebar on Mobile */
         @media (max-width: 768px) {
             .sidebar {
-                left: -250px;
+                left: -280px; /* Matches the sidebar width */
             }
 
             .sidebar.open {
@@ -86,9 +152,10 @@
 
         /* Main Content */
         .content {
-            margin-left: 270px;
-            padding: 20px;
-            transition: margin-left 0.3s ease-in-out;
+            margin-left: var(--sidebar-width);
+            padding: 1.5rem;
+            width: 100%;
+            transition: margin-left var(--transition-speed) ease;
         }
 
         @media (max-width: 768px) {
@@ -97,120 +164,259 @@
             }
         }
 
+        /* Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: white;
-            padding: 15px;
-            border-radius: 5px;
+            background-color: var(--bg-light);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
         }
 
         header h1 {
-            font-size: 22px;
-            color: rgb(143,77,77);
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
         }
 
         .user-info {
             display: flex;
             align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info span {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .user-info span {
+            color: #e0e0e0;
         }
 
         .user-info img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            margin-left: 10px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
         }
 
-        /* Dark Mode Button */
-        #darkModeToggle {
+        /* Buttons */
+        .btn {
             background: none;
             border: none;
-            font-size: 20px;
             cursor: pointer;
-            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s;
         }
 
-        /* Sidebar Toggle Button */
+        .btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         #menuBtn {
-            font-size: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-right: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            #menuBtn {
+                display: inline-flex; /* Visible only on mobile */
+            }
+        }
+
+        body.dark-mode #menuBtn {
+            color: #e0e0e0;
+        }
+
+        #darkModeToggle {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode #darkModeToggle {
+            color: #ffcc00;
         }
 
         /* Student Info Section */
         .student-info {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .student-info h2 {
-            color: rgb(143,77,77);
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .student-info h2 {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
         }
 
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-item strong {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        body.dark-mode .info-item strong {
+            color: #a0a0a0;
+        }
+
+        .info-item span {
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .info-item span {
+            color: #e0e0e0;
+        }
+
+        .passport {
+            display: flex;
+            flex-direction: column;
         }
 
         .passport img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-top: 5px;
+            width: 100px;
+            height: 120px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            object-fit: cover;
+            margin-top: 0.5rem;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
     </style>
     <div class="container">
         <!-- Sidebar Navigation -->
         <nav class="sidebar" id="sidebar">
-            <button id="closeSidebar">✖</button>
-            <h3>Undergraduate (Full-Time) Portal</h3>
+            <div class="sidebar-header">
+                <h3>Undergraduate Portal</h3>
+                <button id="closeSidebar"><i class="fas fa-times"></i></button>
+            </div>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Check Profile</a></li>
-                <li><a href="{% url 'updateprofile' reg_no %}">Update Profile</a></li>
-                <li><a href="#">Register Courses</a></li>
-                <li><a href="#">Authority to Pay</a></li>
-                <li><a href="#">Forms History</a></li>
-                <li><a href="{% url 'logout'%}">Logout</a></li>
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-user"></i> Check Profile</a></li>
+                <li><a href="{% url 'updateprofile' reg_no %}"><i class="fas fa-edit"></i> Update Profile</a></li>
+                <li><a href="#"><i class="fas fa-book"></i> Register Courses</a></li>
+                <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Authority to Pay</a></li>
+                <li><a href="#"><i class="fas fa-history"></i> Forms History</a></li>
+                <li><a href="{% url 'logout'%}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
 
         <!-- Main Content -->
         <main class="content">
             <header>
-                <button id="menuBtn">☰</button>
-                <h1>404Schools Student's ePortals</h1>
+                <div class="header-left">
+                    <button id="menuBtn" class="btn"><i class="fas fa-bars"></i></button>
+                    <h1>404Schools Student Portal</h1>
+                </div>
                 <div class="user-info">
                     <span>{{ reg_no }}</span>
-                    <img src="user-photo.jpg" alt="Profile Photo">
-                    <button id="darkModeToggle">🌙</button>
+                    <img src="{% static 'images/default-avatar.jpg' %}" alt="Profile Photo">
+                    <button id="darkModeToggle" class="btn"><i class="fas fa-moon"></i></button>
                 </div>
             </header>
 
             <section class="student-info">
-                <h2>Student's Info</h2>
+                <h2><i class="fas fa-id-card"></i> Student Information</h2>
                 <div class="info-grid">
-                    <div><strong>Student's Name:</strong> {{ full_name }}</div>
-                    <div><strong>Faculty:</strong> {{ faculty}} </div>
-                    <div><strong>Email:</strong> {{ Email }}</div>
-                    <div><strong>Program Type:</strong> {{programme}}</div>
-                    <div><strong>Date of Birth:</strong> {{date_of_birth}}</div>
-                    <div><strong>Course of Study:</strong> {{course_of_study}}</div>
-                    <div><strong>Semester:</strong> {{semester}}</div>
-                    <div><strong>Entry Mode:</strong> {{entry_mode}}</div>
-                    <div><strong>Entry Year:</strong> {{entry_year}}</div>
-                    <div class="passport">
-                        <strong>Passport:</strong>
+                    <div class="info-item">
+                        <strong>Student's Name</strong>
+                        <span>{{ full_name }}</span>
                     </div>
-                    <div><strong>Mode of Study:</strong> Full-Time</div>
+                    <div class="info-item">
+                        <strong>Faculty</strong>
+                        <span>{{ faculty }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email</strong>
+                        <span>{{ Email }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Program Type</strong>
+                        <span>{{ programme }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Date of Birth</strong>
+                        <span>{{ date_of_birth }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Course of Study</strong>
+                        <span>{{ course_of_study }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Semester</strong>
+                        <span>{{ semester }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Entry Mode</strong>
+                        <span>{{ entry_mode }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Entry Year</strong>
+                        <span>{{ entry_year }}</span>
+                    </div>
+                    <div class="info-item passport">
+                        <strong>Passport Photo</strong>
+                        <img src="{% static 'images/default-passport.jpg' %}" alt="Passport Photo">
+                    </div>
+                    <div class="info-item">
+                        <strong>Mode of Study</strong>
+                        <span>Full-Time</span>
+                    </div>
                 </div>
             </section>
         </main>
@@ -218,37 +424,52 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-        const menuBtn = document.getElementById("menuBtn");
-        const closeSidebar = document.getElementById("closeSidebar");
-        const sidebar = document.getElementById("sidebar");
-        const darkModeToggle = document.getElementById("darkModeToggle");
+            const menuBtn = document.getElementById("menuBtn");
+            const closeSidebar = document.getElementById("closeSidebar");
+            const sidebar = document.getElementById("sidebar");
+            const darkModeToggle = document.getElementById("darkModeToggle");
 
-        // Toggle Sidebar
-        menuBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-        });
+            // Toggle Sidebar
+            menuBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("open");
+            });
 
-        closeSidebar.addEventListener("click", () => {
-            sidebar.classList.remove("open");
-        });
+            closeSidebar.addEventListener("click", () => {
+                sidebar.classList.remove("open");
+            });
 
-        // Toggle Dark Mode
-        darkModeToggle.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
+            // Toggle Dark Mode
+            darkModeToggle.addEventListener("click", () => {
+                document.body.classList.toggle("dark-mode");
+                
+                // Update icon
+                const icon = darkModeToggle.querySelector('i');
+                if (document.body.classList.contains("dark-mode")) {
+                    localStorage.setItem("darkMode", "enabled");
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    localStorage.setItem("darkMode", "disabled");
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
 
-            // Save preference to localStorage
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("darkMode", "enabled");
-            } else {
-                localStorage.setItem("darkMode", "disabled");
+            // Load Dark Mode Preference
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+                darkModeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
             }
-        });
 
-        // Load Dark Mode Preference
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-        }
-    });
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                const isMobile = window.innerWidth <= 768;
+                const isMenuBtn = e.target === menuBtn || menuBtn.contains(e.target);
+                const isSidebar = e.target === sidebar || sidebar.contains(e.target);
+
+                if (isMobile && !isMenuBtn && !isSidebar) {
+                    sidebar.classList.remove("open");
+                }
+            });;
+        });
     </script>
 </body>
 </html>
